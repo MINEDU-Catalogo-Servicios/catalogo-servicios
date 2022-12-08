@@ -9,7 +9,7 @@ GO
 -- Creación
 -- Fecha				Autor				Descripción
 -- 30/11/2022		Juan Carlos Tovar		Se obtiene las direcciones según su nivel
--- EXEC [dbo].[USP_GET_DIRECCIONES] 2,2
+-- EXEC [dbo].[USP_GET_DIRECCIONES] 3,2
 -- =============================================
 CREATE PROCEDURE [dbo].[USP_GET_DIRECCIONES]
 	@tipo int,
