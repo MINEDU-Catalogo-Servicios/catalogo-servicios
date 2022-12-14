@@ -97,4 +97,97 @@ SELECT @insert_incidente
 END
 GO
 
+--**********************************************************************************************
+--Pocedimiento Almacenado:
+DROP PROCEDURE IF EXISTS [dbo].[USP_GET_DATOS_JEFE]
+GO
+-- =============================================
+-- Procedimiento: [[USP_GET_DATOS_JEFE]]
+-- Creación
+-- Fecha				Autor				Descripción
+-- 14/12/2022		Juan Carlos Tovar		Se consulta los datos del jefe solicitand¿te
+/*
+EXEC [dbo].[USP_GET_DATOS_JEFE] 3
+*/
 
+-- =============================================
+CREATE PROCEDURE [dbo].[USP_GET_DATOS_JEFE]
+	@usuario_catalogo_id int
+AS
+BEGIN
+SELECT UC.NOMBRE, UC.APELLIDO, UC.CORREO_ELECTRONICO, UC.DOCUMENTO_IDENTIDAD,
+DI.ENUM_DESC DIRECCION, SE.DESCRIPCION SEDE, SE.UBICACION FROM user_catalogo UC
+LEFT JOIN direccion_sede DS ON UC.DIR_SEDE_ID = DS.DIR_SEDE_ID
+LEFT JOIN direccion DI ON DI.ENUM_ID = DS.DIRECCION_ID
+LEFT JOIN sede SE ON SE.SEDE_ID = DS.SEDE_ID
+WHERE USER_CATALOGO_ID = (SELECT JEFE_ID FROM user_catalogo WHERE USER_CATALOGO_ID = @usuario_catalogo_id)
+END
+GO
+
+
+--**********************************************************************************************
+--Pocedimiento Almacenado:
+DROP PROCEDURE IF EXISTS [dbo].[USP_GET_LISTA_CONTACTOS]
+GO
+-- =============================================
+-- Procedimiento: [USP_GET_LISTA_CONTACTOS]
+-- Creación
+-- Fecha				Autor				Descripción
+-- 14/12/2022		Juan Carlos Tovar		Se lista los contactos de la misma dependencia.
+/*
+EXEC [dbo].[USP_GET_LISTA_CONTACTOS] 2
+*/
+
+-- =============================================
+CREATE PROCEDURE [dbo].[USP_GET_LISTA_CONTACTOS]
+	@dir_sede_id int
+AS
+BEGIN
+SELECT NOMBRE, APELLIDO, CORREO_ELECTRONICO, DOCUMENTO_IDENTIDAD FROM user_catalogo
+WHERE DIR_SEDE_ID = @dir_sede_id
+END
+GO
+
+--**********************************************************************************************
+--Pocedimiento Almacenado:
+DROP PROCEDURE IF EXISTS [dbo].[USP_GET_LISTA_SOLICITUD]
+GO
+-- =============================================
+-- Procedimiento: [USP_GET_LISTA_SOLICITUD]
+-- Creación
+-- Fecha				Autor				Descripción
+-- 14/12/2022		Juan Carlos Tovar		Se lista los contactos de la misma dependencia.
+/*
+EXEC [dbo].[USP_GET_LISTA_SOLICITUD] 2
+*/
+
+-- =============================================
+CREATE PROCEDURE [dbo].[USP_GET_LISTA_SOLICITUD]
+	@user_crea_id int
+AS
+BEGIN
+SELECT * FROM solicitud
+WHERE USUARIO_CREACION = @user_crea_id
+END
+GO
+
+--**********************************************************************************************
+--Pocedimiento Almacenado:
+DROP PROCEDURE IF EXISTS [dbo].[USP_GET_LISTA_SOLICITUD_JEFE]
+GO
+-- =============================================
+-- Procedimiento: [USP_GET_LISTA_SOLICITUD]
+-- Creación
+-- Fecha				Autor				Descripción
+-- 14/12/2022		Juan Carlos Tovar		Se lista las solicitudes derivada
+--EXEC [dbo].[USP_GET_LISTA_SOLICITUD_JEFE] 2
+
+-- =============================================
+CREATE PROCEDURE [dbo].[USP_GET_LISTA_SOLICITUD_JEFE]
+	@user_cat_id int
+AS
+BEGIN
+SELECT * FROM solicitud
+WHERE USER_CATALOGO_ID = @user_cat_id
+END
+GO
